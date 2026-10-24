@@ -235,10 +235,17 @@ document.getElementById("login-button").addEventListener("click", async () => {
     password
   });
 
-  message.textContent = error
-    ? error.message
-    : "You are signed in. Your private dashboard is the next step we will build.";
-});
+  if (error) {
+  message.textContent = error.message;
+} else {
+  message.textContent = "Login successful!";
+  document.getElementById("client-dashboard").style.display = "block";
+  document.getElementById("dashboard-email").textContent =
+    (await supabaseClient.auth.getUser()).data.user?.email || "";
+  document.getElementById("client-dashboard").scrollIntoView({
+    behavior: "smooth"
+  });
+}
 </script>
 
 <section id="client-dashboard" style="display:none; max-width:900px; margin:40px auto; padding:24px; background:#101a2c; color:white; border-radius:16px; font-family:Arial,sans-serif;">
