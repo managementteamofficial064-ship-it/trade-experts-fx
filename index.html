@@ -227,6 +227,8 @@ document.getElementById("signup-button").addEventListener("click", async () => {
 });
 
 document.getElementById("login-button").addEventListener("click", async () => {
+  
+document.getElementById("login-button").addEventListener("click", async () => {
   const email = document.getElementById("client-email").value.trim();
   const password = document.getElementById("client-password").value;
 
@@ -236,16 +238,24 @@ document.getElementById("login-button").addEventListener("click", async () => {
   });
 
   if (error) {
-  message.textContent = error.message;
-} else {
+    message.textContent = error.message;
+    return;
+  }
+
   message.textContent = "Login successful!";
-  document.getElementById("client-dashboard").style.display = "block";
-  document.getElementById("dashboard-email").textContent =
-    (await supabaseClient.auth.getUser()).data.user?.email || "";
-  document.getElementById("client-dashboard").scrollIntoView({
-    behavior: "smooth"
-  });
-}
+
+  const dashboard = document.getElementById("client-dashboard");
+  dashboard.style.display = "block";
+
+  const { data } = await supabaseClient.auth.getUser();
+  const emailDisplay = document.getElementById("dashboard-email");
+
+  if (emailDisplay) {
+    emailDisplay.textContent = data.user?.email || "";
+  }
+
+  dashboard.scrollIntoView({ behavior: "smooth" });
+});
 </script>
 
 <section id="client-dashboard" style="display:none; max-width:900px; margin:40px auto; padding:24px; background:#101a2c; color:white; border-radius:16px; font-family:Arial,sans-serif;">
@@ -286,7 +296,6 @@ document.getElementById("login-button").addEventListener("click", async () => {
   <p id="dashboard-message" role="status"></p>
   <p style="font-size:12px;color:#cbd5e1;">Balances and returns must reflect verified account records. Trading involves risk; profits are not guaranteed.</p>
 </section>
-
 </body>
 </html>
 
