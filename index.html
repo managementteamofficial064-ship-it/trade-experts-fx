@@ -240,6 +240,46 @@ document.getElementById("login-button").addEventListener("click", async () => {
     : "You are signed in. Your private dashboard is the next step we will build.";
 });
 </script>
+
+<section id="client-dashboard" style="display:none; max-width:900px; margin:40px auto; padding:24px; background:#101a2c; color:white; border-radius:16px; font-family:Arial,sans-serif;">
+  <h2 style="color:#d4af37;">Trade Experts FX Dashboard</h2>
+  <p>Welcome to your client account.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;">
+    <div style="background:#1b2940;padding:16px;border-radius:10px;">
+      <p>Account Balance</p>
+      <h3 id="dash-balance">$0.00</h3>
+    </div>
+    <div style="background:#1b2940;padding:16px;border-radius:10px;">
+      <p>Total Deposits</p>
+      <h3 id="dash-deposits">$0.00</h3>
+    </div>
+    <div style="background:#1b2940;padding:16px;border-radius:10px;">
+      <p>Total Withdrawals</p>
+      <h3 id="dash-withdrawals">$0.00</h3>
+    </div>
+    <div style="background:#1b2940;padding:16px;border-radius:10px;">
+      <p>Investment Level</p>
+      <h3 id="dash-level">Not assigned</h3>
+    </div>
+  </div>
+
+  <nav style="display:grid;gap:10px;margin-top:24px;">
+    <button type="button" data-dashboard="home">Home</button>
+    <button type="button" data-dashboard="fund">Fund Account</button>
+    <button type="button" data-dashboard="withdraw">Place Withdrawal</button>
+    <button type="button" data-dashboard="trade">Trade Center</button>
+    <button type="button" data-dashboard="upgrade">Upgrade Account</button>
+    <button type="button" data-dashboard="records">Account Records</button>
+    <button type="button" data-dashboard="profile">Profile</button>
+    <button type="button" data-dashboard="password">Change Password</button>
+    <button type="button" id="dashboard-logout">Log Out</button>
+  </nav>
+
+  <p id="dashboard-message" role="status"></p>
+  <p style="font-size:12px;color:#cbd5e1;">Balances and returns must reflect verified account records. Trading involves risk; profits are not guaranteed.</p>
+</section>
+
 </body>
 </html>
 
