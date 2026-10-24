@@ -2,160 +2,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1726">
-  <title>Trade Experts FX</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6fa;
-      color: #172338;
-    }
-    header {
-      background: #0b1726;
-      color: white;
-      padding: 22px 18px;
-      border-bottom: 3px solid #d5b15d;
-    }
-    .brand { font-size: 22px; font-weight: bold; }
-    .brand span { color: #d5b15d; }
-    nav { margin-top: 18px; }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-right: 16px;
-      font-size: 14px;
-    }
-    .hero {
-      background: #12253b;
-      color: white;
-      padding: 54px 22px;
-      text-align: center;
-    }
-    .hero h1 { font-size: 34px; margin: 0 0 16px; }
-    .hero p {
-      color: #d2dae5;
-      line-height: 1.7;
-      max-width: 540px;
-      margin: auto;
-    }
-    .button {
-      display: inline-block;
-      background: #d5b15d;
-      color: #101b29;
-      padding: 13px 20px;
-      border-radius: 7px;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 20px 5px 0;
-    }
-    main { max-width: 950px; margin: auto; padding: 28px 18px; }
-    h2 { text-align: center; }
-    .plans {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-      gap: 14px;
-      margin-top: 22px;
-    }
-    .plan {
-      background: white;
-      border: 1px solid #e0e5ed;
-      border-radius: 12px;
-      padding: 20px 14px;
-      text-align: center;
-    }
-    .plan h3 { color: #9a7626; }
-    .plan p { font-size: 14px; line-height: 1.6; }
-    .info {
-      background: white;
-      padding: 22px;
-      border-radius: 12px;
-      margin-top: 24px;
-      line-height: 1.7;
-    }
-    footer {
-      background: #0b1726;
-      color: #d2dae5;
-      padding: 24px 18px;
-      text-align: center;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#081426">
+<title>Trade Experts FX | Financial Markets</title>
+<meta name="description" content="Trade Experts FX — financial market insights, trading education, and transparent account services.">
+<style>
+:root {
+  --navy:#081426;
+  --navy2:#10233d;
+  --gold:#d8b568;
+  --cream:#f7f5ef;
+  --muted:#aebbd0;
+  --line:rgba(255,255,255,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--navy);color:white;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.container{width:min(1120px,90%);margin:auto}
+header{border-bottom:1px solid var(--line);background:rgba(8,20,38,.97)}
+.nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;font-size:18px;font-weight:800;letter-spacing:.4px}
+.logo{width:42px;height:42px;border:1px solid var(--gold);border-radius:12px;display:grid;place-items:center;color:var(--gold);font-size:22px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:500}
+.links{display:flex;align-items:center;gap:24px;font-size:14px;color:#d9e0eb}
+.btn{display:inline-block;padding:12px 19px;border-radius:8px;font-weight:700;text-align:center;border:1px solid var(--gold);background:var(--gold);color:#111b29;cursor:pointer}
+.btn-outline{background:transparent;color:var(--gold)}
+.hero{padding:76px 0 68px;background:radial-gradient(ellipse at 80% 20%,#203c5c 0%,transparent 48%),linear-gradient(135deg,#081426,#0d1c30)}
+.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(38px,6vw,66px);line-height:1.08;max-width:720px;margin:18px 0}
+h1 span{color:var(--gold)}
+.hero p{max-width:610px;color:#c4cede;font-size:17px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.note{font-size:12px!important;color:#9caec4!important;margin-top:22px}
+.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;align-items:center;gap:38px}
+.market-card{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:16px;padding:23px}
+.market-card h3{margin:0 0 6px;font-size:17px}
+.market-card p{font-size:13px;margin:0 0 18px}
+.market-row{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);font-size:13px}
+.market-row:last-child{border:0}
+.market-row span:last-child{color:var(--gold)}
+section{padding:65px 0}
+.section-head{text-align:center;max-width:680px;margin:0 auto 35px}
+.section-head h2{font-size:clamp(27px,4vw,38px);margin:9px 0}
+.section-head p{color:var(--muted)}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+.level{padding:21px 16px;border:1px solid var(--line);border-radius:12px;background:var(--navy2)}
+.level .number{color:var(--gold);font-size:12px;letter-spacing:1px;font-weight:800}
+.level h3{font-size:17px;margin:9px 0}
+.level p{font-size:13px;color:var(--muted);margin:0}
+.light{background:var(--cream);color:#152238}
+.light .section-head p{color:#596477}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature{border:1px solid #e1dfd7;background:white;border-radius:13px;padding:24px}
+.feature .symbol{font-size:25px;color:#94702c}
+.feature h3{margin:10px 0 5px}
+.feature p{color:#596477;font-size:14px;margin:0}
+.notice{border:1px solid rgba(216,181,104,.4);background:rgba(216,181,104,.07);padding:24px;border-radius:12px;color:#d6deea}
+.notice h3{color:var(--gold);margin-top:0}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:12px}
+.footer-row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+@media(max-width:800px){
+ .links{gap:12px}.links a:not(.btn){display:none}
+ .hero-grid{grid-template-columns:1fr}
+ .levels{grid-template-columns:repeat(2,1fr)}
+ .level:last-child{grid-column:auto}
+ .features{grid-template-columns:1fr}
+ .hero{padding:52px 0}
+ section{padding:48px 0}
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand">TRADE <span>EXPERTS FX</span></div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#plans">Plans</a>
-      <a href="#analysis">Market Analysis</a>
-      <a href="#account">Account</a>
+<header>
+  <div class="container nav">
+    <a class="brand" href="#">
+      <span class="logo">T</span>
+      <span>TRADE EXPERTS FX<small>MARKET INSIGHTS & SERVICES</small></span>
+    </a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#levels">Levels</a>
+      <a href="#insights">Insights</a>
+      <a class="btn btn-outline" href="#contact">Contact</a>
     </nav>
-  </header>
+  </div>
+</header>
 
-  <section class="hero" id="home">
-    <h1>Make Informed Investment Decisions</h1>
-    <p>Explore financial markets, review investment information
-    and keep track of your portfolio with Trade Experts FX.</p>
-    <a class="button" href="#plans">Explore Plans</a>
-    <a class="button" href="#account">Client Access</a>
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Clarity · Discipline · Transparency</div>
+        <h1>A smarter perspective on <span>financial markets.</span></h1>
+        <p>Explore market insights, understand trading risks, and learn about our service levels. Make informed decisions with clear information—not promises of guaranteed returns.</p>
+        <div class="actions">
+          <a class="btn" href="#levels">Explore Our Levels</a>
+          <a class="btn btn-outline" href="#about">Discover Our Approach</a>
+        </div>
+        <p class="note">Trading and investing involve risk. Capital can be lost. Returns are never guaranteed.</p>
+      </div>
+      <div class="market-card" id="insights">
+        <div class="eyebrow">Market Briefing</div>
+        <h3>Research before decisions</h3>
+        <p>Use verified, dated information when evaluating the markets.</p>
+        <div class="market-row"><span>Market research</span><span>Review sources</span></div>
+        <div class="market-row"><span>Risk management</span><span>Plan carefully</span></div>
+        <div class="market-row"><span>Trading discipline</span><span>Stay informed</span></div>
+        <div class="market-row"><span>Performance</span><span>Verify results</span></div>
+      </div>
+    </div>
   </section>
 
-  <main>
-    <section id="plans">
-      <h2>Our Investment Plans</h2>
-      <p style="text-align:center">
-        Explore the levels and review their terms before investing.
-        No fixed prices are displayed here.
-      </p>
-      <div class="plans">
-        <article class="plan">
-          <h3>Level 1</h3><strong>Novice</strong>
-          <p>Investment basics and portfolio information.</p>
-        </article>
-        <article class="plan">
-          <h3>Level 2</h3><strong>Amateur</strong>
-          <p>Market updates and portfolio tracking.</p>
-        </article>
-        <article class="plan">
-          <h3>Level 3</h3><strong>Professional</strong>
-          <p>Detailed performance reports and research.</p>
-        </article>
-        <article class="plan">
-          <h3>Level 4</h3><strong>Expert</strong>
-          <p>Advanced market information and analysis.</p>
-        </article>
-        <article class="plan">
-          <h3>Level 5</h3><strong>Legendary</strong>
-          <p>Comprehensive portfolio insights and reporting.</p>
-        </article>
+  <section id="levels">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Service Levels</div>
+        <h2>Find the level that fits your needs</h2>
+        <p>Each level can describe a different stage of learning or service access. Details and eligibility should be confirmed before you make a financial commitment.</p>
       </div>
-    </section>
+      <div class="levels">
+        <article class="level"><div class="number">LEVEL 01</div><h3>Novice</h3><p>Market fundamentals and introductory learning.</p></article>
+        <article class="level"><div class="number">LEVEL 02</div><h3>Amateur</h3><p>Developing knowledge and trading discipline.</p></article>
+        <article class="level"><div class="number">LEVEL 03</div><h3>Professional</h3><p>Structured analysis and risk awareness.</p></article>
+        <article class="level"><div class="number">LEVEL 04</div><h3>Expert</h3><p>Advanced research and strategy education.</p></article>
+        <article class="level"><div class="number">LEVEL 05</div><h3>Legendary</h3><p>Advanced learning and service information.</p></article>
+      </div>
+    </div>
+  </section>
 
-    <section class="info" id="analysis">
-      <h2>Market Analysis</h2>
-      <p>Market updates will appear here once a verified,
-      dated news and financial research source is connected.
-      Investment markets involve risk, and losses are possible.</p>
-    </section>
+  <section class="light" id="about">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Our Approach</div>
+        <h2>Built around informed decisions</h2>
+        <p>A professional financial service should explain how it works, disclose risks, and protect client information.</p>
+      </div>
+      <div class="features">
+        <article class="feature"><div class="symbol">◇</div><h3>Clear Information</h3><p>Understand service terms, fees, and risks before making a decision.</p></article>
+        <article class="feature"><div class="symbol">◎</div><h3>Account Security</h3><p>Client records should be private and accessible only to authorized people.</p></article>
+        <article class="feature"><div class="symbol">↗</div><h3>Responsible Reporting</h3><p>Account balances and performance should reflect verified transactions and actual results.</p></article>
+      </div>
+    </div>
+  </section>
 
-    <section class="info" id="account">
-      <h2>Client Account</h2>
-      <p>Client registration and secure login will be connected
-      in the next setup stage.</p>
-      <p>Account balances and performance must be based on
-      verified transactions and accurate financial records.</p>
-    </section>
-  </main>
+  <section>
+    <div class="container">
+      <div class="notice">
+        <h3>Important financial information</h3>
+        <p>Foreign exchange and cryptocurrency markets can be highly volatile. Do not invest money you cannot afford to lose. Review all fees, withdrawal terms, and risks before proceeding. Verify the company’s identity and any required authorization with the relevant regulator before accepting client funds.</p>
+      </div>
+    </div>
+  </section>
 
-  <footer>
-    <strong>TRADE EXPERTS FX</strong>
-    <p>Financial markets involve risk. Investment returns are not guaranteed.</p>
-    <p>© 2026 Trade Experts FX</p>
-  </footer>
+  <section id="contact">
+    <div class="container section-head">
+      <div class="eyebrow">Get in Touch</div>
+      <h2>Questions about our services?</h2>
+      <p>Contact our team for verified information about services, terms, and account support.</p>
+      <a class="btn" href="mailto:contact@tradeexpertsfx.example">Email Our Team</a>
+      <p class="note">Replace this placeholder email with an address you control before publishing.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-row">
+    <span>© 2026 Trade Experts FX</span>
+    <span>Market education · Risk awareness · Transparency</span>
+  </div>
+</footer>
 </body>
 </html>
