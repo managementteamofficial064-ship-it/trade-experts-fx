@@ -4,319 +4,545 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trade Experts FX</title>
+<meta name="theme-color" content="#071326">
+<title>Trade Experts FX | Investment Portal</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#081426;--panel:#10233d;--gold:#d8b568;--muted:#aebbd0}
+:root{--bg:#071326;--panel:#101f36;--panel2:#142741;--gold:#e8bd68;--gold2:#f8df9d;--text:#f5f7fb;--muted:#a8b5c9;--line:rgba(255,255,255,.09);--green:#65d6a0;--red:#ff8d95}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#fff;font-family:Arial,sans-serif;line-height:1.6}
-header,footer{padding:18px 5%;border-bottom:1px solid #293951}
-footer{border-top:1px solid #293951;border-bottom:0;color:var(--muted);font-size:13px}
-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-a{color:var(--gold);text-decoration:none}
-main{width:min(1050px,90%);margin:35px auto}
-h1,h2{line-height:1.2}
-h1{font-size:clamp(34px,6vw,58px)}
-.gold{color:var(--gold)}
-.panel{background:var(--panel);padding:24px;border:1px solid #34465f;border-radius:13px;margin:18px 0}
-button,.button{display:inline-block;border:1px solid var(--gold);background:var(--gold);color:#101a29;padding:12px 17px;border-radius:7px;font-weight:bold;cursor:pointer}
-.secondary{background:transparent;color:var(--gold)}
-input,select{display:block;width:100%;padding:13px;margin:7px 0 16px;background:#081426;border:1px solid #526177;color:#fff;border-radius:7px}
-label{font-size:14px}
-.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-.stat{background:#1b2940;padding:15px;border-radius:9px;overflow-wrap:anywhere}
-.menu{display:grid;gap:9px;margin-top:18px}
-.menu button{text-align:left;background:#10233d;color:white;border-color:#34465f}
-.status{color:var(--gold);overflow-wrap:anywhere}
-[hidden]{display:none!important}
-table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}
-td,th{padding:10px;border-bottom:1px solid #34465f;text-align:left;white-space:nowrap}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;line-height:1.55}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--gold2);text-decoration:none}
+.hidden{display:none!important}
+.wrap{width:min(1160px,92%);margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 0;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
+.brandmark{width:43px;height:43px;border-radius:14px;background:linear-gradient(135deg,#f8df9d,#b77e27);display:grid;place-items:center;color:#071326;font-size:21px;font-weight:900;box-shadow:0 7px 28px #d9a94a22}
+.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px;letter-spacing:1.5px}
+.nav{display:flex;align-items:center;gap:22px;color:var(--muted);font-size:13px}
+.btn{border:0;border-radius:11px;padding:12px 17px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#151c28;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{filter:brightness(1.06)}
+.btn.secondary{background:#ffffff0a;color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#53232b;color:#ffdce0}
+.btn.small{padding:8px 11px;font-size:12px}
+.hero{padding:48px 0 60px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:42px}
+.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800}
+h1{font-size:clamp(37px,5.5vw,65px);line-height:1.08;letter-spacing:-2px;margin:17px 0}
+h1 span{color:var(--gold)}
+h2{font-size:27px;line-height:1.2;margin:8px 0 12px}
+h3{margin:0 0 8px}
+p{color:var(--muted)}
+.hero p{font-size:16px;max-width:540px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.hero-visual{min-height:355px;border:1px solid #d8b66c35;border-radius:28px;position:relative;overflow:hidden;padding:25px;background:radial-gradient(ellipse at 75% 10%,#bd914d38,transparent 40%),linear-gradient(145deg,#182d49,#09162b 70%);box-shadow:0 25px 70px #0005}
+.visual-top{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.visual-value{font-size:31px;font-weight:800;margin-top:25px}
+.visual-value small{font-size:12px;color:var(--green);font-weight:600}
+.chart{width:100%;height:155px;margin-top:20px}
+.chart-labels{display:flex;justify-content:space-between;color:#8293ac;font-size:10px}
+.visual-foot{display:flex;gap:10px;margin-top:19px}
+.visual-chip{background:#ffffff0a;border:1px solid var(--line);padding:10px 12px;border-radius:12px;flex:1;font-size:11px;color:var(--muted)}
+.visual-chip strong{display:block;color:white;font-size:14px}
+.section{padding:45px 0}
+.section-head{text-align:center;max-width:650px;margin:0 auto 28px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.card,.panel{background:linear-gradient(145deg,#12243d,#0d1b30);border:1px solid var(--line);border-radius:18px;padding:23px}
+.card-icon{width:42px;height:42px;border-radius:13px;background:#e8bd6817;border:1px solid #e8bd6833;display:grid;place-items:center;color:var(--gold);font-size:20px;margin-bottom:18px}
+.card p{font-size:13px;margin-bottom:0}
+.notice{border:1px solid #e8bd6838;background:#e8bd680b;padding:18px 20px;border-radius:14px;font-size:12px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:12px}
+.auth-shell{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.auth-art{padding:45px;background:radial-gradient(ellipse at 15% 20%,#b98b3d30,transparent 45%),linear-gradient(145deg,#122844,#071326);display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line)}
+.auth-art h1{font-size:clamp(34px,4vw,52px)}
+.auth-form-wrap{display:grid;place-items:center;padding:28px}
+.auth-form{width:min(420px,100%)}
+.field{margin:14px 0}
+label{display:block;color:#c8d2e1;font-size:12px;font-weight:700;margin-bottom:7px}
+input,select{width:100%;padding:13px 14px;border:1px solid #ffffff18;border-radius:11px;background:#08162a;color:var(--text);outline:none}
+input:focus,select:focus{border-color:var(--gold)}
+input::placeholder{color:#73839b}
+.full{width:100%}
+.status{padding:11px 13px;border-radius:10px;background:#ffffff08;color:var(--muted);font-size:12px;margin:12px 0;overflow-wrap:anywhere}
+.status.error{background:#ff737315;color:#ffb1b5}
+.status.success{background:#65d6a015;color:#9cf0c7}
+.portal{min-height:100vh}
+.portal-header{border-bottom:1px solid var(--line);background:#09172b;position:sticky;top:0;z-index:5}
+.portal-header .topbar{padding:13px 0}
+.portal-body{display:grid;grid-template-columns:220px minmax(0,1fr);gap:25px;padding-top:27px;padding-bottom:45px}
+.sidebar{align-self:start;position:sticky;top:88px;background:#0c1a2e;border:1px solid var(--line);border-radius:17px;padding:13px}
+.side-title{font-size:10px;color:#788ba6;text-transform:uppercase;letter-spacing:1.7px;padding:9px 10px}
+.side-btn{display:flex;width:100%;text-align:left;border:0;border-radius:10px;padding:12px;background:transparent;color:#bdc9d9;margin:2px 0;gap:10px}
+.side-btn.active,.side-btn:hover{background:#e8bd6816;color:var(--gold2)}
+.main{min-width:0}
+.page-title{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:23px}
+.page-title p{margin:3px 0;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:18px}
+.stat{padding:18px;border-radius:15px;background:linear-gradient(145deg,#152943,#0e1c31);border:1px solid var(--line);min-width:0}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:10px}
+.stat-value{font-size:clamp(17px,2vw,24px);font-weight:800;overflow-wrap:anywhere}
+.stat-sub{font-size:10px;color:#8092aa;margin-top:7px}
+.profile-banner{display:flex;align-items:center;gap:15px;padding:22px;border-radius:18px;background:radial-gradient(ellipse at 90% 0%,#e8bd681e,transparent 48%),linear-gradient(120deg,#172c47,#0e1d32);border:1px solid #e8bd682b;margin-bottom:18px}
+.avatar{width:52px;height:52px;flex-shrink:0;display:grid;place-items:center;border-radius:16px;background:linear-gradient(135deg,var(--gold2),#b17b2b);color:#091426;font-weight:900;font-size:21px}
+.profile-banner p{font-size:12px;margin:3px 0}
+.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-bottom:18px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}
+.panel-head h3{font-size:15px}
+.panel-head span{font-size:11px;color:var(--muted)}
+.rowline{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}
+.rowline:last-child{border-bottom:0}
+.rowline span:first-child{color:var(--muted)}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:650px;font-size:12px}
+th,td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:#98a8be;font-weight:700;background:#ffffff04}
+td{color:#e3eaf3}
+.empty{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+.mobile-nav{display:none}
+.mini-note{font-size:11px;color:var(--muted)}
+.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#e8bd6817;color:var(--gold2);font-size:10px}
+.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}
+.admin-form .field{min-width:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:850px){
+.hero{grid-template-columns:1fr;padding-top:25px}.hero-visual{min-height:320px}
+.auth-shell{grid-template-columns:1fr}.auth-art{display:none}
+.portal-body{grid-template-columns:1fr;padding-top:17px}
+.sidebar{display:none}.mobile-nav{display:flex;gap:5px;overflow-x:auto;padding:8px 0 12px}
+.mobile-nav .side-btn{width:auto;white-space:nowrap;padding:9px 12px;font-size:12px}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid2{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+.wrap{width:92%}.nav{gap:10px}.nav a:not(.btn){display:none}
+.topbar{padding:14px 0}.brandmark{width:38px;height:38px}
+.hero{gap:25px;padding-bottom:35px}.hero-visual{padding:19px;min-height:300px}
+.cards{grid-template-columns:1fr}.section{padding:30px 0}
+.page-title{align-items:flex-start;flex-direction:column}
+.profile-banner{padding:16px}.stat{padding:14px}
+.portal-header .topbar{flex-wrap:wrap}.portal-header .brand small{display:none}
+.admin-form{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<header>
-<nav>
-<a href="index.html"><strong>TRADE EXPERTS <span class="gold">FX</span></strong></a>
-<div id="main-nav">
-<a href="#about">About</a> &nbsp;
-<a href="#levels">Service Levels</a> &nbsp;
-<a href="index.html?page=login">Client Login</a>
+<div id="homePage">
+  <div class="wrap">
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brandmark">T</span>
+        <span>TRADE EXPERTS FX<small>INVESTMENT PORTAL</small></span>
+      </a>
+      <nav class="nav">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a class="btn" href="index.html?page=login">Client Login ↗</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Your financial journey starts here</div>
+        <h1>A clearer view of your <span>investment journey.</span></h1>
+        <p>Access your account information through a streamlined client portal. Review your recorded account figures and manage your profile in one place.</p>
+        <div class="hero-actions">
+          <a class="btn" href="index.html?page=login">Access Your Account ↗</a>
+          <a class="btn secondary" href="#about">Explore the Platform</a>
+        </div>
+        <p class="mini-note">Account figures reflect recorded information, not guaranteed returns.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="visual-top"><span>CLIENT PORTAL PREVIEW</span><span>● ACCOUNT OVERVIEW</span></div>
+        <div class="visual-value">Your account, <span style="color:var(--gold)">in focus.</span></div>
+        <p style="font-size:12px;margin:4px 0">A simple place to review recorded account activity.</p>
+        <svg class="chart" viewBox="0 0 500 155" preserveAspectRatio="none" role="img" aria-label="Decorative chart illustration">
+          <defs><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8bd68" stop-opacity=".32"/><stop offset="1" stop-color="#e8bd68" stop-opacity="0"/></linearGradient></defs>
+          <g stroke="#ffffff12" stroke-width="1"><path d="M0 25H500M0 60H500M0 95H500M0 130H500"/></g>
+          <path d="M0 124 C35 115 48 95 78 104 S130 119 159 83 S205 90 239 68 S283 84 313 52 S366 65 397 37 S451 48 500 12 L500 155 L0 155Z" fill="url(#fill)"/>
+          <path d="M0 124 C35 115 48 95 78 104 S130 119 159 83 S205 90 239 68 S283 84 313 52 S366 65 397 37 S451 48 500 12" fill="none" stroke="#e8bd68" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="397" cy="37" r="5" fill="#f8df9d" stroke="#071326" stroke-width="2"/>
+        </svg>
+        <div class="chart-labels"><span>ACCOUNT</span><span>RECORDS</span><span>OVERVIEW</span><span>CONTROL</span></div>
+        <div class="visual-foot">
+          <div class="visual-chip">Account access<strong>Secure login</strong></div>
+          <div class="visual-chip">Your records<strong>Clear overview</strong></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="services">
+      <div class="section-head">
+        <div class="eyebrow">Platform features</div>
+        <h2>Everything organised in one place</h2>
+        <p>Simple account access, clear records, and tools designed to make account management easier.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><div class="card-icon">▤</div><h3>Account overview</h3><p>Review the account details and recorded figures assigned to your profile.</p></article>
+        <article class="card"><div class="card-icon">↗</div><h3>Activity records</h3><p>View recorded deposit and withdrawal totals where account data is available.</p></article>
+        <article class="card"><div class="card-icon">⌘</div><h3>Client support</h3><p>Access your portal and contact the platform administrator about account records.</p></article>
+      </div>
+    </section>
+    <section class="section" id="about">
+      <div class="section-head">
+        <div class="eyebrow">About the portal</div>
+        <h2>Designed for clarity</h2>
+        <p>Trade Experts FX provides a central interface for viewing account information recorded in the platform database.</p>
+      </div>
+      <div class="notice"><strong style="color:var(--gold2)">Important financial notice:</strong> Trading foreign exchange and other financial instruments involves risk and may result in loss. No profit or return is guaranteed. Figures shown in the portal are based on recorded data and do not independently verify funds held, trades executed, or withdrawals paid. Deposits and withdrawals are not processed by this website unless a verified payment service is separately integrated.</div>
+    </section>
+    <footer>© <span id="year"></span> Trade Experts FX. All rights reserved. <span style="float:right">Account information portal</span></footer>
+  </div>
 </div>
-</nav>
-</header>
 
-<main>
-<section id="home-page">
-<p class="gold">CLARITY · DISCIPLINE · TRANSPARENCY</p>
-<h1>A smarter perspective on <span class="gold">financial markets.</span></h1>
-<p class="muted">Explore market insights, trading education, and financial risk awareness. Make informed decisions using clear information—not promises of guaranteed returns.</p>
-<p><a class="button" href="index.html?page=login">Client Login</a> &nbsp; <a class="button secondary" href="#levels">Explore Service Levels</a></p>
-
-<div class="panel" id="about">
-<h2>Our Approach</h2>
-<p>We believe in clear information, responsible reporting, account privacy, and informed financial decisions.</p>
+<div id="loginPage" class="hidden">
+  <div class="auth-shell">
+    <div class="auth-art">
+      <a class="brand" href="index.html"><span class="brandmark">T</span><span>TRADE EXPERTS FX<small>INVESTMENT PORTAL</small></span></a>
+      <div><div class="eyebrow">Welcome back</div><h1>Your account.<br><span>Your information.</span></h1><p>Sign in to review your account details and recorded figures.</p></div>
+      <p class="mini-note">Keep your password private. The platform will never ask you to share it with another person.</p>
+    </div>
+    <div class="auth-form-wrap">
+      <div class="auth-form">
+        <a href="index.html" class="mini-note">← Back to homepage</a>
+        <div style="height:25px"></div>
+        <div class="eyebrow">Client access</div><h2 id="authTitle">Sign in to your account</h2>
+        <p id="authIntro">Enter your details to continue to your dashboard.</p>
+        <div id="authStatus" class="status hidden"></div>
+        <form id="loginForm">
+          <div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+          <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Enter your password"></div>
+          <button class="btn full" id="loginBtn" type="submit">Sign In →</button>
+        </form>
+        <form id="signupForm" class="hidden">
+          <div class="field"><label for="signupName">Full name</label><input id="signupName" required autocomplete="name" placeholder="Your full name"></div>
+          <div class="field"><label for="signupEmail">Email address</label><input id="signupEmail" type="email" required autocomplete="email" placeholder="you@example.com"></div>
+          <div class="field"><label for="signupPassword">Create password</label><input id="signupPassword" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div>
+          <button class="btn full" id="signupBtn" type="submit">Create Account →</button>
+          <p class="mini-note">After registering, an administrator may need to assign your account record before account figures appear.</p>
+        </form>
+        <p id="authSwitch" style="font-size:12px;margin-top:22px">New here? <a href="#" id="showSignup">Create an account</a></p>
+        <div class="notice" style="margin-top:24px">Never send money to a personal account based only on a website message. Verify all financial instructions independently.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="panel" id="levels">
-<h2>Service Levels</h2>
-<div class="grid">
-<div><h3 class="gold">Novice</h3><p>Market fundamentals.</p></div>
-<div><h3 class="gold">Amateur</h3><p>Trading knowledge and discipline.</p></div>
-<div><h3 class="gold">Professional</h3><p>Structured analysis and risk awareness.</p></div>
-<div><h3 class="gold">Expert</h3><p>Advanced research education.</p></div>
-<div><h3 class="gold">Legendary</h3><p>Advanced learning and service information.</p></div>
-</div>
+<div id="portalPage" class="hidden portal">
+  <header class="portal-header">
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="index.html"><span class="brandmark">T</span><span>TRADE EXPERTS FX<small id="portalRole">CLIENT PORTAL</small></span></a>
+        <div class="actions"><span id="headerEmail" class="mini-note"></span><button class="btn secondary small" id="logoutBtn">Sign out ↗</button></div>
+      </div>
+      <nav id="mobileNav" class="mobile-nav"></nav>
+    </div>
+  </header>
+  <div class="wrap portal-body">
+    <aside id="sidebar" class="sidebar"></aside>
+    <main class="main">
+      <div id="portalStatus" class="status hidden"></div>
+      <section id="clientDashboard">
+        <div class="page-title"><div><div class="eyebrow">Your workspace</div><h2>Account overview</h2><p>Review your recorded account information.</p></div><span class="tag">Client account</span></div>
+        <div class="profile-banner">
+          <div class="avatar" id="clientAvatar">C</div>
+          <div style="min-width:0"><div class="mini-note">WELCOME BACK</div><h2 id="clientName" style="font-size:22px;margin:3px 0;overflow-wrap:anywhere">Client</h2><p id="clientEmail" style="overflow-wrap:anywhere">—</p></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Recorded deposits</div><div class="stat-value" id="deposits">—</div><div class="stat-sub">Total entered in account record</div></div>
+          <div class="stat"><div class="stat-label">Recorded withdrawals</div><div class="stat-value" id="withdrawals">—</div><div class="stat-sub">Total entered in account record</div></div>
+          <div class="stat"><div class="stat-label">Recorded net amount</div><div class="stat-value" id="balance">—</div><div class="stat-sub">Deposits minus withdrawals</div></div>
+          <div class="stat"><div class="stat-label">Profit / loss</div><div class="stat-value" style="font-size:18px">Not recorded</div><div class="stat-sub">No profit/loss field configured</div></div>
+        </div>
+        <div class="grid2">
+          <div class="panel"><div class="panel-head"><h3>Account details</h3><span>PROFILE</span></div>
+            <div class="rowline"><span>Full name</span><strong id="detailName">—</strong></div>
+            <div class="rowline"><span>Email</span><strong id="detailEmail" style="overflow-wrap:anywhere;text-align:right">—</strong></div>
+            <div class="rowline"><span>Investment level</span><strong id="level">Not assigned</strong></div>
+            <div class="rowline"><span>Account record</span><strong id="recordStatus">Checking</strong></div>
+          </div>
+          <div class="panel"><div class="panel-head"><h3>Account information</h3><span>NOTICE</span></div>
+            <p style="font-size:12px">Your figures reflect the information currently recorded for your account. They do not confirm that funds have been received or paid out.</p>
+            <p style="font-size:12px">Funding, withdrawal requests, transaction history, and profit/loss calculations are not processed by this portal yet.</p>
+            <button class="btn secondary full" data-view="password">Change password</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminDashboard" class="hidden">
+        <div class="page-title"><div><div class="eyebrow">Management workspace</div><h2>Admin dashboard</h2><p>Manage recorded client account information.</p></div><span class="tag">Administrator</span></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Client records loaded</div><div class="stat-value" id="adminCount">0</div><div class="stat-sub">Records in current list</div></div>
+          <div class="stat"><div class="stat-label">Account management</div><div class="stat-value">Active</div><div class="stat-sub">Admin permission verified</div></div>
+          <div class="stat"><div class="stat-label">Financial transactions</div><div class="stat-value">Manual records</div><div class="stat-sub">No payment gateway connected</div></div>
+          <div class="stat"><div class="stat-label">Profit / loss</div><div class="stat-value">Not configured</div><div class="stat-sub">No profit field in database</div></div>
+        </div>
+        <div class="panel" style="margin-bottom:18px">
+          <div class="panel-head"><h3>Client accounts</h3><button class="btn secondary small" id="refreshClients">↻ Refresh</button></div>
+          <p class="mini-note">Edit existing records below. New users may need an account record created through the database before they appear here.</p>
+          <div class="table-wrap"><table><thead><tr><th>Client</th><th>Investment level</th><th>Deposits</th><th>Withdrawals</th><th>Recorded net</th><th>Action</th></tr></thead><tbody id="clientRows"><tr><td colspan="6" class="empty">Loading client records…</td></tr></tbody></table></div>
+        </div>
+        <div id="editPanel" class="panel hidden">
+          <div class="panel-head"><h3>Edit client record</h3><button class="btn secondary small" id="cancelEdit">Close</button></div>
+          <form id="editForm">
+            <input type="hidden" id="editUserId">
+            <div class="admin-form">
+              <div class="field"><label for="editName">Full name</label><input id="editName" required></div>
+              <div class="field"><label for="editLevel">Investment level</label><select id="editLevel"><option value="">Not assigned</option><option>Novice</option><option>Amateur</option><option>Professional</option><option>Expert</option><option>Legendary</option></select></div>
+              <div class="field"><label for="editDeposits">Recorded deposits</label><input id="editDeposits" type="number" min="0" step="0.01" required></div>
+              <div class="field"><label for="editWithdrawals">Recorded withdrawals</label><input id="editWithdrawals" type="number" min="0" step="0.01" required></div>
+            </div>
+            <p class="mini-note">Only enter amounts supported by verified account records. Saving these fields does not transfer funds.</p>
+            <button class="btn" id="saveClientBtn" type="submit">Save account record</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="simplePage" class="hidden">
+        <div class="page-title"><div><div class="eyebrow">Account settings</div><h2 id="simpleTitle">Account</h2><p id="simpleIntro">Manage your account information.</p></div></div>
+        <div class="panel" id="simpleContent"></div>
+      </section>
+    </main>
+  </div>
 </div>
 
-<div class="panel">
-<h2>Important Risk Notice</h2>
-<p>Foreign exchange and other financial markets involve risk. You can lose money. Returns are not guaranteed. Verify all fees, terms, company details, and regulatory authorizations before sending funds.</p>
-</div>
-</section>
-
-<section id="login-page" hidden>
-<div class="panel" style="max-width:480px;margin:35px auto">
-<p class="gold">SECURE CLIENT PORTAL</p>
-<h1 style="font-size:34px">Welcome Back</h1>
-<p class="muted">Sign in to access your private account.</p>
-<label for="email">Email address</label>
-<input id="email" type="email" autocomplete="username" placeholder="Enter your email">
-<label for="password">Password</label>
-<input id="password" type="password" autocomplete="current-password" placeholder="Enter your password">
-<button id="login-button" style="width:100%">Log In</button>
-<p id="login-status" class="status" role="status"></p>
-<hr style="border-color:#34465f">
-<p>Don't have an account?</p>
-<button class="secondary" id="show-signup">Create Account</button>
-<div id="signup-area" hidden>
-<label for="signup-email">Email address</label>
-<input id="signup-email" type="email" placeholder="Enter your email">
-<label for="signup-password">Create password</label>
-<input id="signup-password" type="password" minlength="8" placeholder="At least 8 characters">
-<button id="signup-button">Register</button>
-</div>
-<p><a href="index.html">← Return to homepage</a></p>
-</div>
-</section>
-
-<section id="client-page" hidden>
-<p class="gold">PRIVATE CLIENT AREA</p>
-<h1 style="font-size:36px">Client Dashboard</h1>
-<p>Signed in as <strong id="client-email"></strong></p>
-<div class="grid">
-<div class="stat"><span class="muted">Recorded Balance</span><h2 id="balance">Not available</h2></div>
-<div class="stat"><span class="muted">Total Deposits</span><h2 id="deposits">Not available</h2></div>
-<div class="stat"><span class="muted">Total Withdrawals</span><h2 id="withdrawals">Not available</h2></div>
-<div class="stat"><span class="muted">Investment Level</span><h2 id="level">Not assigned</h2></div>
-</div>
-<p id="client-status" class="status"></p>
-<div class="panel">
-<h2>Account Menu</h2>
-<div class="menu">
-<button data-client-action="fund">＋ Fund Account</button>
-<button data-client-action="withdraw">↗ Withdrawal Information</button>
-<button data-client-action="records">▤ Account Records</button>
-<button data-client-action="profile">♙ Profile</button>
-<button data-client-action="password">⚿ Change Password</button>
-</div>
-<div id="client-panel" class="panel" hidden></div>
-</div>
-<button id="client-logout" class="secondary">Log Out</button>
-</section>
-
-<section id="admin-page" hidden>
-<p class="gold">AUTHORIZED ADMINISTRATOR</p>
-<h1 style="font-size:36px">Admin Dashboard</h1>
-<p>Signed in as <strong id="admin-email"></strong></p>
-<div class="panel">
-<h2>Client Account Records</h2>
-<p class="muted">These are database records, not a live trading or payment system. Only enter figures supported by verified transactions.</p>
-<button id="refresh-clients">Refresh Client List</button>
-<p id="admin-status" class="status"></p>
-<div id="client-list"></div>
-</div>
-<div class="panel">
-<h2>Update Existing Client Record</h2>
-<p class="muted">Enter the client's user ID from an existing account record. Changes should reflect verified transactions.</p>
-<label for="record-user-id">Client user ID</label>
-<input id="record-user-id" placeholder="Client UUID">
-<label for="record-name">Client full name</label>
-<input id="record-name" placeholder="Full name">
-<label for="record-level">Investment level</label>
-<select id="record-level">
-<option value="">Not assigned</option>
-<option>Novice</option><option>Amateur</option>
-<option>Professional</option><option>Expert</option><option>Legendary</option>
-</select>
-<label for="record-deposits">Verified total deposits</label>
-<input id="record-deposits" type="number" min="0" step="0.01" placeholder="0.00">
-<label for="record-withdrawals">Verified total withdrawals</label>
-<input id="record-withdrawals" type="number" min="0" step="0.01" placeholder="0.00">
-<button id="save-record">Save Existing Record</button>
-<p id="save-status" class="status"></p>
-</div>
-<button id="admin-logout" class="secondary">Log Out</button>
-</section>
-</main>
-
-<footer>
-<p>© 2026 Trade Experts FX · Financial markets involve risk. Returns are not guaranteed.</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(async function(){
-const URL="https://rnxrisotrcgiveztswpx.supabase.co";
-const KEY="sb_publishable_8DsYJssHQuD5BPPZiud8gA_gUKh2WT0";
-const db=window.supabase.createClient(URL,KEY);
-const $=id=>document.getElementById(id);
-const show=id=>$(id).hidden=false;
-const hide=id=>$(id).hidden=true;
-const money=n=>Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-const params=new URLSearchParams(location.search);
-const requestedPage=params.get("page");
-let currentUser=null;
+(() => {
+"use strict";
+const SUPABASE_URL = "https://rnxrisotrcgiveztswpx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_8DsYJssHQuD5BPPZiud8gA_gUKh2WT0";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let isAdmin = false;
+let clientRecord = null;
+let clientList = [];
 
-function setPage(page){
-["home-page","login-page","client-page","admin-page"].forEach(hide);
-if(page==="admin")show("admin-page");
-else if(page==="client")show("client-page");
-else if(page==="login")show("login-page");
-else show("home-page");
-$("main-nav").hidden=page!=="home";
+const money = n => new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",maximumFractionDigits:2}).format(Number(n)||0);
+const show = id => $(id).classList.remove("hidden");
+const hide = id => $(id).classList.add("hidden");
+function status(id,msg,type="") {
+  const el=$(id); if(!el)return;
+  el.textContent=msg; el.classList.remove("hidden","error","success");
+  if(type)el.classList.add(type);
 }
-
-function message(id,text){$(id).textContent=text;}
-
-async function loadClient(user){
-currentUser=user;
-$("client-email").textContent=user.email||"";
-setPage("client");
-const {data,error}=await db.from("client_accounts")
-.select("full_name,investment_level,deposit_total,withdrawal_total")
-.eq("user_id",user.id).maybeSingle();
-if(error){message("client-status","Signed in, but account records could not be loaded. Check database permissions.");return;}
-if(!data){message("client-status","No account record has been assigned to this user yet.");return;}
-const dep=Number(data.deposit_total||0),withd=Number(data.withdrawal_total||0);
-$("deposits").textContent=money(dep);
-$("withdrawals").textContent=money(withd);
-$("balance").textContent=money(dep-withd);
-$("level").textContent=data.investment_level||"Not assigned";
-message("client-status",data.full_name?"Welcome, "+data.full_name+".":"Account records loaded.");
+function portalMessage(msg,type="") { status("portalStatus",msg,type); }
+function setBusy(id,busy,label) {
+  const el=$(id); if(!el)return;
+  el.disabled=busy;
+  if(busy){el.dataset.oldText=el.textContent;el.textContent=label||"Please wait…";}
+  else if(el.dataset.oldText){el.textContent=el.dataset.oldText;delete el.dataset.oldText;}
 }
-
-async function loadAdmin(user){
-currentUser=user;
-$("admin-email").textContent=user.email||"";
-setPage("admin");
-await refreshClients();
+function initials(name) {
+  return (name||"Client").trim().split(/\s+/).slice(0,2).map(s=>s[0]||"").join("").toUpperCase()||"C";
 }
-
-async function checkSession(){
-const {data}=await db.auth.getSession();
-const user=data.session?.user;
-if(!user){setPage(requestedPage==="login"?"login":"home");return;}
-const {data:isAdmin,error}=await db.rpc("is_trade_admin");
-if(!error&&isAdmin){await loadAdmin(user);return;}
-await loadClient(user);
+function setAuthMode(signup) {
+  if(signup){hide("loginForm");show("signupForm");$("authTitle").textContent="Create your account";$("authIntro").textContent="Register to request access to the client portal.";$("authSwitch").innerHTML='Already registered? <a href="#" id="showLogin">Sign in</a>';}
+  else{show("loginForm");hide("signupForm");$("authTitle").textContent="Sign in to your account";$("authIntro").textContent="Enter your details to continue to your dashboard.";$("authSwitch").innerHTML='New here? <a href="#" id="showSignup">Create an account</a>';}
 }
-async function refreshClients(){
-message("admin-status","Loading client records...");
-const {data,error}=await db.from("client_accounts")
-.select("user_id,full_name,investment_level,deposit_total,withdrawal_total,created_at")
-.order("created_at",{ascending:false}).limit(200);
-if(error){message("admin-status","Could not load records: "+error.message);return;}
-if(!data.length){$("client-list").textContent="No client account records found.";message("admin-status","");return;}
-const table=document.createElement("table");
-const thead=document.createElement("tr");
-["User ID","Name","Level","Deposits","Withdrawals","Action"].forEach(t=>{const th=document.createElement("th");th.textContent=t;thead.append(th);});
-table.append(thead);
-data.forEach(row=>{
-const tr=document.createElement("tr");
-[row.user_id,row.full_name||"",row.investment_level||"Not assigned",money(row.deposit_total),money(row.withdrawal_total)].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});
-const td=document.createElement("td");
-const btn=document.createElement("button");btn.textContent="Edit";btn.addEventListener("click",()=>{
-$("record-user-id").value=row.user_id;
-$("record-name").value=row.full_name||"";
-$("record-level").value=row.investment_level||"";
-$("record-deposits").value=row.deposit_total||0;
-$("record-withdrawals").value=row.withdrawal_total||0;
-$("record-user-id").scrollIntoView({behavior:"smooth"});
+function wireAuthSwitch() {
+  $("showSignup")?.addEventListener("click",e=>{e.preventDefault();setAuthMode(true)});
+  $("showLogin")?.addEventListener("click",e=>{e.preventDefault();setAuthMode(false)});
+}
+function navItems() {
+  return isAdmin ? [
+    ["dashboard","▦","Dashboard"],["clients","♙","Client accounts"],["password","⚙","Change password"]
+  ] : [
+    ["dashboard","▦","Overview"],["records","▤","Account records"],["fund","＋","Deposits"],["withdraw","↗","Withdrawals"],["profile","♙","Profile"],["password","⚙","Password"]
+  ];
+}
+function buildNav(active="dashboard") {
+  const items=navItems();
+  ["sidebar","mobileNav"].forEach(id=>{
+    $(id).innerHTML=(id==="sidebar"?'<div class="side-title">Workspace</div>':"")+items.map(([key,ico,label])=>`<button class="side-btn ${key===active?"active":""}" data-view="${key}"><span>${ico}</span>${label}</button>`).join("");
+  });
+}
+function switchView(view) {
+  hide("clientDashboard");hide("adminDashboard");hide("simplePage");
+  buildNav(view);
+  if(view==="dashboard"){show(isAdmin?"adminDashboard":"clientDashboard");return;}
+  if(isAdmin && view==="clients"){show("adminDashboard");$("editPanel").classList.remove("hidden");$("editPanel").scrollIntoView({behavior:"smooth",block:"start"});return;}
+  show("simplePage");
+  const info={
+    records:["Account records","Review the information recorded for your account.",`<div class="rowline"><span>Recorded deposits</span><strong>${money(clientRecord?.deposit_total)}</strong></div><div class="rowline"><span>Recorded withdrawals</span><strong>${money(clientRecord?.withdrawal_total)}</strong></div><div class="rowline"><span>Recorded net amount</span><strong>${money((Number(clientRecord?.deposit_total)||0)-(Number(clientRecord?.withdrawal_total)||0))}</strong></div><p class="mini-note">This is not a transaction history or confirmation of payments. Detailed transaction records are not configured yet.</p>`],
+    fund:["Deposits","Deposit processing is not connected.",`<div class="notice">This portal does not currently receive or process deposits. Contact the platform administrator through a separately verified channel to confirm any funding instructions. Do not rely on displayed totals as proof of payment.</div>`],
+    withdraw:["Withdrawals","Withdrawal processing is not connected.",`<div class="notice">This portal cannot submit or pay withdrawals. A figure in the account record is not confirmation that a withdrawal has been processed or paid.</div>`],
+    profile:["Your profile","Your account identity details.",`<div class="rowline"><span>Full name</span><strong>${escapeHtml(clientRecord?.full_name||"Not assigned")}</strong></div><div class="rowline"><span>Email</span><strong style="overflow-wrap:anywhere">${escapeHtml(currentUser?.email||"—")}</strong></div><div class="rowline"><span>Investment level</span><strong>${escapeHtml(clientRecord?.investment_level||"Not assigned")}</strong></div>`],
+    password:["Change password","Choose a strong password that you do not use elsewhere.",`<form id="passwordForm"><div class="field"><label for="newPassword">New password</label><input id="newPassword" type="password" minlength="8" required autocomplete="new-password" placeholder="At least 8 characters"></div><button class="btn" type="submit" id="changePasswordBtn">Update password</button><div id="passwordStatus" class="status hidden"></div></form>`]
+  };
+  const entry=info[view]||["Account","Account information",'<p>Choose an option from the menu.</p>'];
+  $("simpleTitle").textContent=entry[0];$("simpleIntro").textContent=entry[1];$("simpleContent").innerHTML=entry[2];
+  $("passwordForm")?.addEventListener("submit",changePassword);
+}
+function escapeHtml(value) {
+  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+async function checkAdmin() {
+  const {data,error}=await db.rpc("is_trade_admin");
+  if(error) { console.error("Admin permission check failed",error); return false; }
+  return data===true;
+}
+async function openPortal(user) {
+  currentUser=user;
+  $("headerEmail").textContent=user.email||"";
+  hide("homePage");hide("loginPage");show("portalPage");
+  status("portalStatus","Loading your account…");
+  isAdmin=await checkAdmin();
+  $("portalRole").textContent=isAdmin?"ADMINISTRATOR WORKSPACE":"CLIENT PORTAL";
+  if(isAdmin) {
+    hide("clientDashboard");show("adminDashboard");buildNav("dashboard");
+    await loadClients();
+  } else {
+    hide("adminDashboard");show("clientDashboard");buildNav("dashboard");
+    await loadClient();
+  }
+  $("portalStatus").classList.add("hidden");
+}
+async function loadClient() {
+  const {data,error}=await db.from("client_accounts")
+    .select("full_name,investment_level,deposit_total,withdrawal_total")
+    .eq("user_id",currentUser.id).maybeSingle();
+  if(error) {
+    console.error(error);
+    portalMessage("We couldn't load your account record. Please refresh or contact the administrator.","error");
+    $("recordStatus").textContent="Unable to load";
+    return;
+  }
+  clientRecord=data;
+  if(!data) {
+    $("clientName").textContent="Account not assigned";
+    $("clientAvatar").textContent=initials("Client");
+    $("clientEmail").textContent=currentUser.email||"";
+    $("detailName").textContent="Not assigned";
+    $("detailEmail").textContent=currentUser.email||"—";
+    $("deposits").textContent="—";$("withdrawals").textContent="—";$("balance").textContent="—";
+    $("level").textContent="Not assigned";$("recordStatus").textContent="Pending";
+    portalMessage("Your login is active, but no client account record has been assigned yet. Ask the administrator to create or link your account record.","error");
+    return;
+  }
+  const dep=Number(data.deposit_total)||0,wd=Number(data.withdrawal_total)||0;
+  const name=data.full_name||"Client";
+  $("clientName").textContent=name;$("clientAvatar").textContent=initials(name);
+  $("clientEmail").textContent=currentUser.email||"";
+  $("detailName").textContent=name;$("detailEmail").textContent=currentUser.email||"—";
+  $("deposits").textContent=money(dep);$("withdrawals").textContent=money(wd);
+  $("balance").textContent=money(dep-wd);$("level").textContent=data.investment_level||"Not assigned";
+  $("recordStatus").textContent="Record found";
+}
+async function loadClients() {
+  $("clientRows").innerHTML='<tr><td colspan="6" class="empty">Loading client records…</td></tr>';
+  const {data,error}=await db.from("client_accounts")
+    .select("user_id,full_name,investment_level,deposit_total,withdrawal_total,created_at")
+    .order("created_at",{ascending:false}).limit(200);
+  if(error) {
+    console.error(error);
+    $("clientRows").innerHTML='<tr><td colspan="6" class="empty">Could not load records. Check admin database permissions.</td></tr>';
+    portalMessage("Client records could not be loaded. Confirm your admin database permissions.","error");
+    return;
+  }
+  clientList=data||[];$("adminCount").textContent=clientList.length;
+  if(!clientList.length) {
+    $("clientRows").innerHTML='<tr><td colspan="6" class="empty">No client account records found yet.</td></tr>';
+    return;
+  }
+  $("clientRows").innerHTML=clientList.map((c,i)=>{
+    const net=(Number(c.deposit_total)||0)-(Number(c.withdrawal_total)||0);
+    return `<tr><td><strong>${escapeHtml(c.full_name||"Unnamed client")}</strong><br><span class="mini-note">${escapeHtml(c.user_id)}</span></td><td>${escapeHtml(c.investment_level||"Not assigned")}</td><td>${money(c.deposit_total)}</td><td>${money(c.withdrawal_total)}</td><td>${money(net)}</td><td><button class="btn secondary small" data-edit-index="${i}">Edit</button></td></tr>`;
+  }).join("");
+}
+function editClient(index) {
+  const c=clientList[Number(index)];if(!c)return;
+  $("editUserId").value=c.user_id;$("editName").value=c.full_name||"";
+  $("editLevel").value=c.investment_level||"";
+  $("editDeposits").value=Number(c.deposit_total)||0;
+  $("editWithdrawals").value=Number(c.withdrawal_total)||0;
+  show("editPanel");$("editPanel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function saveClient(e) {
+  e.preventDefault();
+  if(!isAdmin){portalMessage("Administrator permission is required.","error");return;}
+  const allowed=await checkAdmin();
+  if(!allowed){portalMessage("Your administrator permission could not be verified.","error");return;}
+  const userId=$("editUserId").value;
+  const deposits=Number($("editDeposits").value),withdrawals=Number($("editWithdrawals").value);
+  if(!userId||!Number.isFinite(deposits)||!Number.isFinite(withdrawals)||deposits<0||withdrawals<0) {
+    portalMessage("Enter a valid client and non-negative amounts.","error");return;
+  }
+  setBusy("saveClientBtn",true,"Saving…");
+  const {data,error}=await db.from("client_accounts").update({
+    full_name:$("editName").value.trim(),
+    investment_level:$("editLevel").value||null,
+    deposit_total:deposits,withdrawal_total:withdrawals
+  }).eq("user_id",userId).select("user_id");
+  setBusy("saveClientBtn",false);
+  if(error){console.error(error);portalMessage("Could not save the record. Check the database permissions and try again.","error");return;}
+  if(!data||!data.length){portalMessage("No record was updated. Confirm that this client record exists and your admin permissions are configured.","error");return;}
+  portalMessage("Client account record saved.","success");
+  hide("editPanel");await loadClients();
+}
+async function changePassword(e) {
+  e.preventDefault();
+  const password=$("newPassword").value;
+  if(password.length<8){status("passwordStatus","Use at least 8 characters.","error");return;}
+  setBusy("changePasswordBtn",true,"Updating…");
+  const {error}=await db.auth.updateUser({password});
+  setBusy("changePasswordBtn",false);
+  if(error){status("passwordStatus",error.message,"error");return;}
+  $("newPassword").value="";
+  status("passwordStatus","Password updated successfully.","success");
+}
+async function handleLogin(e) {
+  e.preventDefault();status("authStatus","Signing in…");
+  const email=$("loginEmail").value.trim(),password=$("loginPassword").value;
+  setBusy("loginBtn",true,"Signing in…");
+  const {data,error}=await db.auth.signInWithPassword({email,password});
+  setBusy("loginBtn",false);
+  if(error){status("authStatus",error.message,"error");return;}
+  await openPortal(data.user);
+}
+async function handleSignup(e) {
+  e.preventDefault();status("authStatus","Creating your account…");
+  const email=$("signupEmail").value.trim(),password=$("signupPassword").value,name=$("signupName").value.trim();
+  if(!name){status("authStatus","Please enter your full name.","error");return;}
+  setBusy("signupBtn",true,"Creating account…");
+  const {data,error}=await db.auth.signUp({
+    email,password,
+    options:{data:{full_name:name},emailRedirectTo:location.origin+location.pathname+"?page=login"}
+  });
+  setBusy("signupBtn",false);
+  if(error){status("authStatus",error.message,"error");return;}
+  if(data.session&&data.user){status("authStatus","Account created. Your client account record may need to be assigned by the administrator.","success");await openPortal(data.user);}
+  else{status("authStatus","Registration submitted. Check your email for a confirmation link if email confirmation is enabled, then sign in. The administrator may need to assign your client record.","success");setAuthMode(false);}
+}
+async function logout() {
+  const {error}=await db.auth.signOut();
+  if(error){portalMessage("Could not sign out. Please try again.","error");return;}
+  location.href=location.pathname;
+}
+document.addEventListener("click",e=>{
+  const view=e.target.closest("[data-view]");
+  if(view){switchView(view.dataset.view);return;}
+  const edit=e.target.closest("[data-edit-index]");
+  if(edit){editClient(edit.dataset.editIndex);}
 });
-td.append(btn);tr.append(td);table.append(tr);
-});
-$("client-list").replaceChildren(table);
-message("admin-status","Showing "+data.length+" account record(s).");
+$("loginForm").addEventListener("submit",handleLogin);
+$("signupForm").addEventListener("submit",handleSignup);
+$("editForm").addEventListener("submit",saveClient);
+$("logoutBtn").addEventListener("click",logout);
+$("refreshClients").addEventListener("click",loadClients);
+$("cancelEdit").addEventListener("click",()=>hide("editPanel"));
+wireAuthSwitch();
+$("year").textContent=new Date().getFullYear();
+
+async function init() {
+  const page=new URLSearchParams(location.search).get("page");
+  if(page==="login"){hide("homePage");show("loginPage");}
+  const {data,error}=await db.auth.getSession();
+  if(error){console.error(error);return;}
+  if(data.session?.user){await openPortal(data.session.user);}
+  db.auth.onAuthStateChange((event,session)=>{
+    if(event==="SIGNED_OUT"){currentUser=null;isAdmin=false;}
+    if(event==="SIGNED_IN"&&session?.user&&!currentUser){setTimeout(()=>openPortal(session.user),0);}
+  });
 }
-
-$("login-button").addEventListener("click",async()=>{
-const email=$("email").value.trim(),password=$("password").value;
-if(!email||!password){message("login-status","Enter your email and password.");return;}
-message("login-status","Signing in...");
-const {data,error}=await db.auth.signInWithPassword({email,password});
-if(error){message("login-status",error.message);return;}
-const {data:isAdmin,error:roleError}=await db.rpc("is_trade_admin");
-if(!roleError&&isAdmin)await loadAdmin(data.user);
-else await loadClient(data.user);
-});
-
-$("show-signup").addEventListener("click",()=>{ $("signup-area").hidden=!$("signup-area").hidden; });
-$("signup-button").addEventListener("click",async()=>{
-const email=$("signup-email").value.trim(),password=$("signup-password").value;
-if(!email||password.length<8){message("login-status","Enter a valid email and a password of at least 8 characters.");return;}
-const {error}=await db.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname+"?page=login"}});
-message("login-status",error?error.message:"Registration submitted. Check your email to confirm your account.");
-});
-
-$("refresh-clients").addEventListener("click",refreshClients);
-$("save-record").addEventListener("click",async()=>{
-const userId=$("record-user-id").value.trim();
-const deposits=Number($("record-deposits").value),withdrawals=Number($("record-withdrawals").value);
-if(!userId){message("save-status","Enter the client user ID.");return;}
-if(!Number.isFinite(deposits)||!Number.isFinite(withdrawals)||deposits<0||withdrawals<0){message("save-status","Enter valid non-negative amounts.");return;}
-const {data:role,error:roleError}=await db.rpc("is_trade_admin");
-if(roleError||!role){message("save-status","Administrator permission could not be verified.");return;}
-const {data:existing,error:lookupError}=await db.from("client_accounts").select("user_id").eq("user_id",userId).maybeSingle();
-if(lookupError||!existing){message("save-status","No existing client record was found for that user ID. Create the record securely through the database first.");return;}
-const {error}=await db.from("client_accounts").update({
-full_name:$("record-name").value.trim()||null,
-investment_level:$("record-level").value||null,
-deposit_total:deposits,
-withdrawal_total:withdrawals
-}).eq("user_id",userId);
-message("save-status",error?"Update failed: "+error.message:"Account record updated.");
-if(!error)await refreshClients();
-});
-
-document.querySelectorAll("[data-client-action]").forEach(btn=>btn.addEventListener("click",async()=>{
-const p=$("client-panel");p.hidden=false;p.replaceChildren();
-const h=document.createElement("h2"),txt=document.createElement("p");
-const action=btn.dataset.clientAction;
-const info={
-fund:["Funding Information","Deposit requests are not connected to a payment provider. Contact the verified administrator for official instructions and keep your receipts."],
-withdraw:["Withdrawal Information","Withdrawal processing is not enabled on this website yet. Contact the verified administrator through a verified channel."],
-records:["Account Records","Your available recorded totals are displayed on the dashboard. Detailed transaction history has not been connected."],
-profile:["Profile","Signed-in email: "+(currentUser?.email||"")+". Profile editing is not enabled."]
-};
-h.textContent=info[action][0];txt.textContent=info[action][1];p.append(h,txt);
-if(action==="password"){
-const input=document.createElement("input");input.type="password";input.placeholder="New password (at least 8 characters)";
-const btn=document.createElement("button");btn.textContent="Update Password";
-const result=document.createElement("p");result.className="status";
-btn.onclick=async()=>{if(input.value.length<8){result.textContent="Use at least 8 characters.";return;}const {error}=await db.auth.updateUser({password:input.value});result.textContent=error?error.message:"Password updated.";if(!error)input.value="";};
-p.append(input,btn,result);
-}
-}));
-
-async function logout(){
-const {error}=await db.auth.signOut();
-if(error){alert(error.message);return;}
-location.href="index.html";
-}
-$("client-logout").addEventListener("click",logout);
-$("admin-logout").addEventListener("click",logout);
-
-await checkSession();
+init();
 })();
 </script>
 </body>
