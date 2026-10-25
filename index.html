@@ -66,7 +66,13 @@ function home(){$("homePage").classList.remove("hidden");$("authPage").classList
 function showAuth(mode){$("homePage").classList.add("hidden");$("dashboardPage").classList.add("hidden");$("authPage").classList.remove("hidden");setAuthMode(mode);scrollTo(0,0)}
 function setAuthMode(mode){let signup=mode==="signup";$("authTitle").textContent=signup?"Create your account":"Sign in";$("nameWrap").classList.toggle("hidden",!signup);$("fullName").required=signup;$("authSubmit").textContent=signup?"Create account":"Sign in";$("password").autocomplete=signup?"new-password":"current-password";$("authForm").dataset.mode=mode;$("authMessage").innerHTML=""}
 function setTop(logged){$("topActions").innerHTML=logged?'<button class="btn outline" onclick="openDash()">Dashboard</button> <button class="btn gold" onclick="logout()">Sign out</button>':'<button class="btn outline" onclick="showAuth(\\'login\\')">Sign in</button> <button class="btn gold" onclick="showAuth(\\'signup\\')">Open account</button>'}
-function openDash(){$("homePage").classList.add("hidden");$("authPage").classList.add("hidden");$("dashboardPage").classList.remove("hidden")}
+
+function setTop(logged){
+  $("topActions").innerHTML = logged
+    ? '<button class="btn outline" onclick="openDash()">Dashboard</button> <button class="btn gold" onclick="logout()">Sign out</button>'
+    : '<button class="btn outline" onclick="showAuth(\'login\')">Sign in</button> <button class="btn gold" onclick="showAuth(\'signup\')">Open account</button>';
+}
+
 async function handleAuth(e){e.preventDefault();let mode=$("authForm").dataset.mode,email=$("email").value.trim(),password=$("password").value;$("authSubmit").disabled=true;$("authMessage").innerHTML="";
 try{let r=mode==="signup"?await db.auth.signUp({email,password,options:{data:{full_name:$("fullName").value.trim()}}}):await db.auth.signInWithPassword({email,password});if(r.error)throw r.error;if(mode==="signup"&&!r.data.session){$("authMessage").innerHTML='<div class="success">Registration received. Check your email for a confirmation link, then sign in.</div>';return}await loadSession()}catch(err){$("authMessage").innerHTML=`<div class="error">${esc(err.message)}</div>`}finally{$("authSubmit").disabled=false}}
 async function ensureRecord(u){let r=await db.from("client_accounts").select("id").eq("user_id",u.id).maybeSingle();if(r.error)throw r.error;if(!r.data){let x=await db.from("client_accounts").insert({user_id:u.id,full_name:u.user_metadata?.full_name||u.email?.split("@")[0]||"Client",investment_level:"Not assigned",deposit_total:0,withdrawal_total:0,account_status:"Pending",profit_balance:0});if(x.error)throw x.error}}
