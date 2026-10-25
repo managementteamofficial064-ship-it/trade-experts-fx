@@ -662,34 +662,146 @@ async function copyWalletAddress() {
   }
 }
 
-async function loadClients() {
-  const target = $("clientRecords");
-  if (!target) return;
-  target.textContent = "Loading client records…";
 
-  const {data, error} = await db
+async function loadClients() {
+  const target = document.getElementById("clientRecords");
+  if (!target) return;
+
+  target.textContent = "Loading client accounts...";
+
+  const { data, error } = await db
     .from("client_accounts")
-    .select("id,created_at,user_id,full_name,investment_level,deposit_total,withdrawal_total")
-    .order("created_at", {ascending:false})
+    .select(
+      "id,created_at,user_id,full_name,investment_level,deposit_total,withdrawal_total,account_status,profit_balance"
+    )
+    .order("created_at", { ascending: false })
     .limit(100);
 
   if (error) {
-    target.textContent = "Unable to load records: " + error.message;
-    return;
-  }
-  if (!data?.length) {
-    target.textContent = "No client account records found.";
+    target.textContent = "Unable to load accounts: " + error.message;
     return;
   }
 
-  target.innerHTML = data.map(client => `
-    <div class="card" style="margin-top:12px">
-      <strong>${escapeHTML(client.full_name || "Unnamed client")}</strong>
-      <p class="notice">User ID: ${escapeHTML(client.user_id || "")}</p>
-      <p>Investment level: ${escapeHTML(client.investment_level || "Not assigned")}</p>
-      <p>Recorded deposits: ${money(client.deposit_total)}</p>
-      <p>Recorded withdrawals: ${money(client.withdrawal_total)}</p>
-    </div>`).join("");
+  if (!data || data.length === 0) {
+    target.textContent = "No client accounts found.";
+    return;
+  }
+
+  target.innerHTML = data.map(client => {
+    const id = client.id;
+    const deposits = Number(client.deposit_total || 0);
+    const withdrawals = Number(client.withdrawal_total || 0);
+    const profit = Number(client.profit_balance || 0);
+    const balance = deposits - withdrawals + profit;
+
+    return `
+      <div class="card" style="margin-top:18px">
+        <h3>${escapeHTML(client.full_name || "Unnamed client")}</h3>
+
+        <p class="notice">
+          User ID: ${escapeHTML(client.user_id || "")}
+        </p>
+
+        <label>Investment level</label>
+        <input id="level_${id}"
+          value="${escapeHTML(client.investment_level || "")}">
+
+        <label>Account status</label>
+        <select id="status_${id}">
+          <option value="Pending" ${client.account_status === "Pending" ? "selected" : ""}>Pending</option>
+          <option value="Active" ${client.account_status === "Active" ? "selected" : ""}>Active</option>
+          <option value="Suspended" ${client.account_status === "Suspended" ? "selected" : ""}>Suspended</option>
+        </select>
+
+        <label>Total deposited</label>
+        <input id="deposit_${id}" type="number" min="0" step="0.01"
+          value="${deposits}">
+
+        <label>Total withdrawn</label>
+        <input id="withdrawal_${id}" type="number" min="0" step="0.01"
+          value="${withdrawals}">
+
+        <label>Recorded profit</label>
+        <input id="profit_${id}" type="number" step="0.01"
+          value="${profit}">
+
+        <p><strong>Calculated account balance:</strong>
+          <span id="balance_${id}">${balance.toFixed(2)}</span>
+        </p>
+
+        <button class="btn gold"
+          onclick="saveClientAccount('${id}')">
+          Save account changes
+        </button>
+
+        <div id="saveStatus_${id}" class="status"></div>
+      </div>
+    `;
+  }).join("");
+
+  data.forEach(client => {
+    const id = client.id;
+
+    ["deposit", "withdrawal", "profit"].forEach(field => {
+      document.getElementById(`${field}_${id}`).addEventListener("input", () => {
+        const deposit = Number(document.getElementById(`deposit_${id}`).value || 0);
+        const withdrawal = Number(document.getElementById(`withdrawal_${id}`).value || 0);
+        const profit = Number(document.getElementById(`profit_${id}`).value || 0);
+
+        document.getElementById(`balance_${id}`).textContent =
+          (deposit - withdrawal + profit).toFixed(2);
+      });
+    });
+  });
+}
+
+async function saveClientAccount(id) {
+  if (!isAdmin) {
+    alert("Administrator access is required.");
+    return;
+  }
+
+  const deposits = Number(document.getElementById(`deposit_${id}`).value);
+  const withdrawals = Number(document.getElementById(`withdrawal_${id}`).value);
+  const profit = Number(document.getElementById(`profit_${id}`).value);
+  const level = document.getElementById(`level_${id}`).value.trim();
+  const status = document.getElementById(`status_${id}`).value;
+  const statusBox = document.getElementById(`saveStatus_${id}`);
+
+  if (
+    !Number.isFinite(deposits) ||
+    !Number.isFinite(withdrawals) ||
+    !Number.isFinite(profit) ||
+    deposits < 0 ||
+    withdrawals < 0
+  ) {
+    statusBox.textContent = "Please enter valid amounts. Deposits and withdrawals cannot be negative.";
+    statusBox.className = "status error";
+    return;
+  }
+
+  statusBox.textContent = "Saving changes...";
+  statusBox.className = "status";
+
+  const { error } = await db
+    .from("client_accounts")
+    .update({
+      investment_level: level,
+      account_status: status,
+      deposit_total: deposits,
+      withdrawal_total: withdrawals,
+      profit_balance: profit
+    })
+    .eq("id", id);
+
+  if (error) {
+    statusBox.textContent = "Save failed: " + error.message;
+    statusBox.className = "status error";
+    return;
+  }
+
+  statusBox.textContent = "Account updated successfully.";
+  statusBox.className = "status success";
 }
 
 async function logout() {
