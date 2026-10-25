@@ -112,6 +112,17 @@ async function logout(){if(chatTimer)clearInterval(chatTimer);await db.auth.sign
 async function market(){try{let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true");if(!r.ok)throw Error();let d=await r.json();$("btcPrice").textContent=money(d.bitcoin.usd);$("ethPrice").textContent=money(d.ethereum.usd);$("solPrice").textContent=money(d.solana.usd);$("btcChange").textContent=d.bitcoin.usd_24h_change.toFixed(2)+"%"}catch(e){$("btcPrice").textContent="Unavailable";$("ethPrice").textContent="Unavailable";$("solPrice").textContent="Unavailable"}}
 async function marketChart(){try{let r=await fetch("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7");if(!r.ok)throw Error();let d=await r.json();chart=new Chart($("marketChart"),{type:"line",data:{labels:d.prices.map(p=>new Date(p[0]).toLocaleDateString()),datasets:[{label:"BTC price (USD)",data:d.prices.map(p=>p[1]),borderColor:"#e7b64b",backgroundColor:"rgba(231,182,75,.12)",fill:true,pointRadius:0,tension:.25}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"#fff"}}},scales:{x:{ticks:{color:"#a9b7ca",maxTicksLimit:7},grid:{color:"#293e55"}},y:{ticks:{color:"#a9b7ca",callback:v=>"$"+Number(v).toLocaleString()},grid:{color:"#293e55"}}}}})}catch(e){$("marketChart").parentElement.innerHTML='<div class="empty">Market chart is temporarily unavailable.</div>'}}
 $("year").textContent=new Date().getFullYear();market();marketChart();setInterval(market,60000);
+
+window.addEventListener("error", function(event) {
+  const message = document.getElementById("authMessage");
+  if (message) {
+    message.innerHTML =
+      '<div class="error">Website error: ' +
+      String(event.message || "Unknown JavaScript error") +
+      '</div>';
+  }
+});
+
 db.auth.onAuthStateChange((event,session)=>{if(session&&!user)setTimeout(()=>loadSession().catch(console.error),0);else if(!session&&user){user=null;admin=false;account=null;setTop(false);home()}});
 loadSession().catch(e=>{console.error(e);home()});
 </script>
